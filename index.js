@@ -18,8 +18,13 @@ app.set('views', path.join(__dirname,'views'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+// app.use(function(req, res, next){
+//   res.locals.errors = null;
+//   next();
+// });
 // set Static path
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(expressValidator);
 
 // var person = [
 //   {
@@ -58,25 +63,33 @@ var users = [
 ]
 
 app.get('/', function( req, res) {
-  var title = 'you are a customer 3';
+  var title = 'you are a customer ';
   var title2 = "you are a new customer";
   // res.json(person);
   res.render('index', {
-    title: title,
+    title: title2,
     users: users
   });
 });
 
 app.post('/users/add', function(req, res){
   // console.log(req.body.first_name);
+  // req.checkBody('first_name', "first name is required").notEmpty();
+  var title2 = "you are a new customer";
+
 
   var newUser = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     email: req.body.email
   }
-  console.log(newUser);
-})
+  users.push(newUser);
+  res.render('index', {
+    title: title2,
+    users: users
+  });
+  // console.log(newUser);
+});
 
 app.listen(3000, function(){
   console.log('Server is listening on Port 3000.....');
